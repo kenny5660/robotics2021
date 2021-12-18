@@ -2,14 +2,14 @@ import cv2
 import numpy as np
 
 
-low = np.array((16,172,13), np.uint8)
-high = np.array((51,255,91), np.uint8)
+low = np.array((84,73,11), np.uint8)
+high = np.array((110,255,255), np.uint8)
 
 
 
 
 def g_count(img, i):
-    l = np.array((84,73,11), np.uint8)
+    l = np.array((84,200,11), np.uint8)
     h = np.array((110,255,255), np.uint8)
     mask = cv2.inRange(img,l,h) 
     count = cv2.countNonZero(mask) * (((40/37)**i)**2)
@@ -19,8 +19,8 @@ def g_count(img, i):
 
 
 def b_count(img, i):
-    l = np.array((113,1143,31), np.uint8)
-    h = np.array((122,255,255), np.uint8)
+    l = np.array((111,70,19), np.uint8)
+    h = np.array((123,255,255), np.uint8)
     mask = cv2.inRange(img,l,h) 
     count = cv2.countNonZero(mask) * (((40/37)**i)**2)
     print(count, ":b ")
@@ -28,8 +28,8 @@ def b_count(img, i):
     return count
 
 def y_count(img, i):
-    l = np.array((16,172,13), np.uint8)
-    h = np.array((51,255,91), np.uint8)
+    l = np.array((16,192,16), np.uint8)
+    h = np.array((51,248,255), np.uint8)
     mask = cv2.inRange(img,l,h) 
     count = cv2.countNonZero(mask) * (((40/37)**i)**2)
     print(count, ":y ")
@@ -73,7 +73,7 @@ def test(img1 ):
     
     while True:
         img = rotate_image (img1, -15)
-        img = img[630:980]
+        img = img[600:980]
         
         img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(img_hsv,low,high) 
@@ -169,7 +169,7 @@ def to_qeue(image):
 if __name__ == "__main__":
     import os
     if os.name == 'nt':
-        img1 = cv2.imread ("t0.jpg")
+        img1 = cv2.imread ("t1.jpg")
     else:
         os.system('libcamera-jpeg -o main1080.jpg -t 10 --width 2592  --height 1944')
         img1 = cv2.imread("main1080.jpg")
