@@ -1,1 +1,3 @@
-import cv2
+import vision
+
+vision.fun()
