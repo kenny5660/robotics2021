@@ -13,7 +13,7 @@ def g_count(img, i):
     h = np.array((110,255,255), np.uint8)
     mask = cv2.inRange(img,l,h) 
     count = cv2.countNonZero(mask) * ((40/37)**i)
-    #print(count, ":g ")
+    print(count, ":g ")
 
     return count 
 
@@ -23,7 +23,7 @@ def b_count(img, i):
     h = np.array((122,255,255), np.uint8)
     mask = cv2.inRange(img,l,h) 
     count = cv2.countNonZero(mask) * ((40/37)**i)
-    #print(count, ":b ")
+    print(count, ":b ")
  
     return count
 
@@ -32,7 +32,7 @@ def y_count(img, i):
     h = np.array((51,255,91), np.uint8)
     mask = cv2.inRange(img,l,h) 
     count = cv2.countNonZero(mask) * ((40/38)**i)
-    #print(count, ":y ")
+    print(count, ":y ")
 
     return count 
 
@@ -98,17 +98,25 @@ def color(y,b,g):
 
 def queue_to_st(queue):
     st = {}
+    st_c = {}
     j = 0
     st[queue[0]] = j
+    st_c[queue[0]] = 1
     j += 1
     st_q = []
     st_q.append(0)
     for i in range(1,7):
         if (queue[i] in st.keys()):
-            st_q.append(st[queue[i]])
+            if (st_c[queue[i]] > 1):
+                st_q.append(j)
+                j = j + 1
+            else:    
+                st_q.append(st[queue[i]])
+                st_c[queue[i]] += 1 
         else:
             st[queue[i]] = j
             st_q.append(st[queue[i]])
+            st_c[queue[i]] = 1
             j = j + 1
     return st_q
 
@@ -132,9 +140,9 @@ def to_qeue(image):
         g = g_count(a.copy(), i)
         color_b = color(y,b,g)
         queue.append(color_b)
-        print (color_b)
         i = i + 1
         #print()
+    print(queue)
     return queue_to_st(queue)
 
 
