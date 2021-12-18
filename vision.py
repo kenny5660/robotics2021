@@ -150,8 +150,14 @@ def to_qeue(image):
 
 
 if __name__ == "__main__":
-    img1 = cv2.imread ("t0.jpg")
-    print(to_qeue(img1))
+    import os
+    if os.name == 'nt':
+        img1 = cv2.imread ("a00.jpg")
+    else:
+        os.system('libcamera-jpeg -o main1080.jpg -t 10 --width 2592  --height 1944')
+        img1 = cv2.imread("main1080.jpg")
+    
+    to_qeue(img1)
     #test(img1)
 
     

@@ -59,7 +59,7 @@ class OCServo:
         self.serial.write(data_packet)
         self.serial.flush()
         return_pucket = [i for i in range(6)]
-        return_pucket = self.serial.read(6)
+        #return_pucket = self.serial.read(6)
         return return_pucket[self.SERVO_D_PACKET_STATE]
 
     def readData(addr):
@@ -72,18 +72,36 @@ class OCServo301(OCServo):
         self.SERVO_D_301_DEGREE_COEF = 0.0879120879120879
         self.kMaxServoDeg = 4095;  
         self.kMinServoDeg = 0; 
-    def setDegrees(self, deg, isWait=False, time_ms=0):
-        data = [i for i in range(4)]
+    def setDegrees(self, deg, isWait=False, time_ms=0,speed=-1):
+        data = [i for i in range(6)]
         servo_deg = int(deg / self.SERVO_D_301_DEGREE_COEF)%self.kMaxServoDeg
         servo_deg_bytes = servo_deg.to_bytes(2, byteorder='little')
         time_ms_bytes = time_ms.to_bytes(2, byteorder='little')
+        if speed == -1:
+            speed = 4095
+        speed_bytes = speed.to_bytes(2, byteorder='little')
         data[1] = servo_deg_bytes[1]
         data[0] = servo_deg_bytes[0]
         data[2] = time_ms_bytes[0]
         data[3] = time_ms_bytes[1]
+        data[4] = speed_bytes[0]
+        data[5] = speed_bytes[1]
         self.sendData(self.SERVO_D_ADDR_GOAL_POSITION, data)
         if isWait:
             pass
+    def setMode(self,str_mode):
+        if str_mode == "motor":
+            self.sendData(int("0x23",base=16), [1])
+        else:
+            self.sendData(int("0x23",base=16), [0])
+    def setSpeed(self, speed):
+        data = [i for i in range(2)]
+        if speed == -1:
+            speed = 4095
+        speed_bytes = speed.to_bytes(2, byteorder='little')
+        data[0] = speed_bytes[0]
+        data[1] = speed_bytes[1]
+        self.sendData(int("0x2E",base=16), data)
 
 if __name__ == "__main__":
     import os
@@ -95,6 +113,11 @@ if __name__ == "__main__":
         ser = serial.Serial('/dev/ttyUSB0', 1000000, timeout=1)
     main_servo = OCServo301()
     main_servo.connect(ser,1)
-    main_servo.setDegrees(0)
-    sleep(2)
-    main_servo.setDegrees(51.43)
+    main_servo.setMode("servo")
+    sleep(1)
+    main_servo.setDegrees(200,speed=1000)
+    sleep(1)
+    main_servo.setMode("motor")
+    sleep(1)
+    main_servo.setSpeed(0)
+    main_servo.setSpeed(33000)

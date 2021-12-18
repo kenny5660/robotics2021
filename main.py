@@ -6,7 +6,9 @@ import cv2
 import RPi.GPIO as GPIO
 from queue import Queue, Empty
 import OCServo
-
+MAIN_SERVO_RESET = 0
+MAIN_SERVO_STEP = 51.43
+cur_deg = MAIN_SERVO_RESET
 if os.name == 'nt':
         ser = serial.Serial('COM5', 1000000, timeout=1)
 else:
@@ -14,11 +16,16 @@ else:
 
 main_servo = OCServo.OCServo301()
 main_servo.connect(ser,1)
-MAIN_SERVO_RESET = 0
-MAIN_SERVO_STEP = 51.43
+main_servo.setMode("servo")
 
 def set_cup(cup_num):
-    main_servo.setDegrees((MAIN_SERVO_STEP*cup_num+MAIN_SERVO_RESET)%360)
+    global cur_deg
+    cup_num = cup_num % 7
+    deg = (MAIN_SERVO_STEP*cup_num+MAIN_SERVO_RESET)%360
+    if (deg ==0) and (cur_deg > 180):
+        deg = 359.9
+    cur_deg = deg
+    main_servo.setDegrees(cur_deg,speed=4095)
 
 
 PIN_OPTIC_PAIR_1 = 3
@@ -40,6 +47,7 @@ while True:
         print("detect "+str(i))
         i+=1
         set_cup(i)
+        sleep(0.3)
         queue_brick_detect.queue.clear()
     except KeyboardInterrupt:
         GPIO.cleanup()
