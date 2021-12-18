@@ -61,6 +61,7 @@ while True:
         os.system('libcamera-jpeg -o main1080.jpg -t 1 --width 2592  --height 1944')
         img1 = cv2.imread("main1080.jpg")
         queue_brics = vision.to_qeue(img1)
+        vision.test_trash(img1)
     else:
         queue_brics = [0,1,2,3,4,5,6,7]
     #GPIO.wait_for_edge(PIN_BUTTON_START, GPIO.FALLING)

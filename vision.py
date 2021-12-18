@@ -1,20 +1,20 @@
 import cv2
 import numpy as np
 
-low_g = np.array((97,57,62), np.uint8)
-high_g = np.array((148,142,164), np.uint8)
+low_g = np.array((97,0,90), np.uint8)
+high_g = np.array((148,142,200), np.uint8)
 
-low_B =np.array((113,143,31), np.uint8)
+low_B =np.array((109,143,31), np.uint8)
 high_B = np.array((122,255,255), np.uint8)
 
-low_y = np.array((16,189,16), np.uint8)
-high_y = np.array((51,252,255), np.uint8)
+low_y = np.array((16,189,31), np.uint8)
+high_y = np.array((51,253,255), np.uint8)
 
 
 
 
-low = low_B
-high = high_B
+low = low_g
+high = high_g
 
 
 def g_count(img, i):
@@ -105,17 +105,17 @@ def get_type(y,b,g):
         else:
             return "sb"
     elif (col == 'g'):
-        if (g < 20000):
+        if (g < 14000):
             return "sg"
-        elif(g < 35000):
+        elif(g < 30000):
             return "mg"
         else:
             return "bg"
     else:
-        if (y < 33000):
-            return "sy"
-        else:
+        if (y < 8000):
             return "by"
+        else:
+            return "sy"
 
 def queue_to_st(queue):
     st = {}
@@ -147,15 +147,15 @@ def to_qeue(image):
     img = img[580:980]
     cv2.imwrite("cropfull.jpg",cv2.cvtColor(img, cv2.COLOR_HSV2BGR))
     imgs = []
-    imgs.append(img[:,120:520])
+    imgs.append(img[:,125:565])
     cv2.imwrite("crop1.jpg",cv2.cvtColor(imgs[-1], cv2.COLOR_HSV2BGR))
-    imgs.append(img[:,530:900])
+    imgs.append(img[:,570:940])
     cv2.imwrite("crop2.jpg",cv2.cvtColor(imgs[-1], cv2.COLOR_HSV2BGR))
-    imgs.append(img[:,900:1250])
+    imgs.append(img[:,940:1290])
     cv2.imwrite("crop3.jpg",cv2.cvtColor(imgs[-1], cv2.COLOR_HSV2BGR))
-    imgs.append(img[:,1250:1580])
+    imgs.append(img[:,1290:1600])
     cv2.imwrite("crop4.jpg",cv2.cvtColor(imgs[-1], cv2.COLOR_HSV2BGR))
-    imgs.append(img[:,1580:1890])
+    imgs.append(img[:,1630:1940])
     cv2.imwrite("crop5.jpg",cv2.cvtColor(imgs[-1], cv2.COLOR_HSV2BGR))
     imgs.append(rotate_image (img[:,1930:2250], -25))
     cv2.imwrite("crop6.jpg",cv2.cvtColor(imgs[-1], cv2.COLOR_HSV2BGR))
@@ -176,7 +176,12 @@ def to_qeue(image):
 
 
 
-
+def test_trash(img1):
+        img = rotate_image (img1, -15)
+        img = img[580:980]
+        img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        mask = cv2.inRange(img_hsv,low,high) 
+        cv2.imwrite("out.jpg", mask)
 
 if __name__ == "__main__":
     import os
