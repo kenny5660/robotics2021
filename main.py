@@ -49,18 +49,18 @@ i = 0
 set_cup(0)
 while True:
     GPIO.wait_for_edge(PIN_BUTTON_PRESTART, GPIO.FALLING)
-    os.system('libcamera-jpeg -o main1080.jpg -t 10 --width 2592  --height 1944')
+    os.system('libcamera-jpeg -o main1080.jpg -t 1 --width 2592  --height 1944')
     img1 = cv2.imread("main1080.jpg")
     queue_brics = vision.to_qeue(img1)
     set_cup(0)
-    GPIO.wait_for_edge(PIN_BUTTON_START, GPIO.FALLING)
+    #GPIO.wait_for_edge(PIN_BUTTON_START, GPIO.FALLING)
     queue_brick_detect.queue.clear()
     for i in range(7):
         try:
             event = queue_brick_detect.get()
             print("detect "+str(i))
             i+=1
-            set_cup(i)
+            set_cup(queue_brics[i])
             sleep(0.3)
             queue_brick_detect.queue.clear()
         except KeyboardInterrupt:
