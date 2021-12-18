@@ -53,7 +53,9 @@ i = 0
 set_cup(0)
 while True:
     #GPIO.cleanup()
-    #queue_buttons.queue.clear()
+    #
+    cur_deg = MAIN_SERVO_RESET
+    set_cup(0)
     but_num = queue_buttons.get()
     if but_num == PIN_BUTTON_1:
         os.system('libcamera-jpeg -o main1080.jpg -t 1 --width 2592  --height 1944')
@@ -61,10 +63,9 @@ while True:
         queue_brics = vision.to_qeue(img1)
     else:
         queue_brics = [0,1,2,3,4,5,6,7]
-    set_cup(0)
     #GPIO.wait_for_edge(PIN_BUTTON_START, GPIO.FALLING)
     queue_brick_detect.queue.clear()
-    for i in range(7):
+    for i in range(6):
         try:
             event = queue_brick_detect.get()
             print("detect "+str(i))
@@ -73,6 +74,8 @@ while True:
             sleep(0.3)
             queue_brick_detect.queue.clear()
         except KeyboardInterrupt:
-            GPIO.cleanup()
+            #GPIO.cleanup()
             exit()
+    queue_buttons.queue.clear()
+    sleep(2)
     
