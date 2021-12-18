@@ -115,8 +115,9 @@ def test(img1 ):
 
 def to_qeue(image):
     img = rotate_image (image, -27)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     img = img[400:720]
+    cv2.imwrite("croped_.jpg",img)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     imgs = []
     imgs.append(img[:,0:360])
     imgs.append(img[:,360:680])
@@ -137,9 +138,15 @@ def to_qeue(image):
 
 
 if __name__ == "__main__":
-    img1 = cv2.imread ("a00.jpg")
+    import os
+    if os.name == 'nt':
+        img1 = cv2.imread ("a00.jpg")
+    else:
+        os.system('libcamera-jpeg -o main1080.jpg -t 10 --width 2592  --height 1944')
+        img1 = cv2.imread("main1080.jpg")
+    
     to_qeue(img1)
-    test(img1)
+    #test(img1)
 
     
 
