@@ -1,20 +1,20 @@
 import cv2
 import numpy as np
 
-low_g = np.array((89,29,9), np.uint8)
-high_g = np.array((127,160,255), np.uint8)
+low_g = np.array((97,57,62), np.uint8)
+high_g = np.array((148,142,164), np.uint8)
 
 low_B =np.array((113,143,31), np.uint8)
 high_B = np.array((122,255,255), np.uint8)
 
-low_y = np.array((16,192,16), np.uint8)
-high_y = np.array((51,254,255), np.uint8)
+low_y = np.array((16,189,16), np.uint8)
+high_y = np.array((51,252,255), np.uint8)
 
 
 
 
-low = low_y
-high = high_y
+low = low_B
+high = high_B
 
 
 def g_count(img, i):
@@ -181,7 +181,7 @@ def to_qeue(image):
 if __name__ == "__main__":
     import os
     if os.name == 'nt':
-        img1 = cv2.imread ("t4.jpg")
+        img1 = cv2.imread ("t8.jpg")
     else:
         os.system('libcamera-jpeg -o main1080.jpg -t 10 --width 2592  --height 1944')
         img1 = cv2.imread("main1080.jpg")
