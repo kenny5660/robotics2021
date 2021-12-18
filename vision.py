@@ -1,20 +1,20 @@
 import cv2
 import numpy as np
 
-low_g = np.array((84,200,11), np.uint8)
-high_g = np.array((110,255,255), np.uint8)
+low_g = np.array((89,29,9), np.uint8)
+high_g = np.array((127,160,255), np.uint8)
 
 low_B =np.array((113,143,31), np.uint8)
 high_B = np.array((122,255,255), np.uint8)
 
 low_y = np.array((16,192,16), np.uint8)
-high_y = np.array((51,248,255), np.uint8)
+high_y = np.array((51,254,255), np.uint8)
 
 
 
 
-low = low_B
-high = high_B
+low = low_y
+high = high_y
 
 
 def g_count(img, i):
@@ -67,10 +67,10 @@ def rotate_image(image, angle):
 
 def test(img1 ):
     cv2.namedWindow("test2")
-    cv2.createTrackbar("l_h","test2", low[0], 180, low_change_h)
+    cv2.createTrackbar("l_h","test2", low[0], 255, low_change_h)
     cv2.createTrackbar("l_s","test2", low[1], 255, low_change_s)
     cv2.createTrackbar("l_v","test2", low[2], 255, low_change_v)
-    cv2.createTrackbar("h_h","test2", high[0], 180, high_change_h)
+    cv2.createTrackbar("h_h","test2", high[0], 255, high_change_h)
     cv2.createTrackbar("h_s","test2", high[1], 255, high_change_s)
     cv2.createTrackbar("h_v","test2", high[2], 255, high_change_v)
     
@@ -80,7 +80,7 @@ def test(img1 ):
         img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(img_hsv,low,high) 
         cv2.imwrite("out.jpg", mask)
-        cv2.imshow('test2',mask)
+        cv2.imshow('test2',cv2.resize(mask,(mask.shape[1]//2,mask.shape[0]//2)))
         ch = cv2.waitKey(5)
         if (ch == 27):
             break
@@ -107,7 +107,7 @@ def get_type(y,b,g):
     elif (col == 'g'):
         if (g < 20000):
             return "sg"
-        elif(g < 30000):
+        elif(g < 35000):
             return "mg"
         else:
             return "bg"
@@ -181,7 +181,7 @@ def to_qeue(image):
 if __name__ == "__main__":
     import os
     if os.name == 'nt':
-        img1 = cv2.imread ("t0.jpg")
+        img1 = cv2.imread ("t4.jpg")
     else:
         os.system('libcamera-jpeg -o main1080.jpg -t 10 --width 2592  --height 1944')
         img1 = cv2.imread("main1080.jpg")
