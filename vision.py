@@ -102,7 +102,7 @@ def test(img1 ):
         img = img[400:720]
         img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(img_hsv,low,high) 
-        cv2.imshow('test2',mask)
+        cv2.imshow('test2',img)
         ch = cv2.waitKey(5)
         if (ch == 27):
             break
@@ -137,9 +137,9 @@ def to_qeue(image):
 
 
 if __name__ == "__main__":
-    img1 = cv2.imread ("a0.jpg")
+    img1 = cv2.imread ("a00.jpg")
     to_qeue(img1)
-    #test(img1)
+    test(img1)
 
     
 
