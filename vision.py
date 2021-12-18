@@ -78,7 +78,7 @@ def fun():
         if (ch == 27):
             break
         if (ch == ord('a')):
-            low[0]+= 5;
+            low[0]+= 5
     cap.release()
     cv2.destroyAllWindows()
 
