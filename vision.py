@@ -19,8 +19,8 @@ def g_count(img, i):
 
 
 def b_count(img, i):
-    l = np.array((111,70,19), np.uint8)
-    h = np.array((123,255,255), np.uint8)
+    l = np.array((113,143,31), np.uint8)
+    h = np.array((122,255,255), np.uint8)
     mask = cv2.inRange(img,l,h) 
     count = cv2.countNonZero(mask) * (((40/37)**i)**2)
     print(count, ":b ")
@@ -141,14 +141,22 @@ def to_qeue(image):
     img = rotate_image (image, -15)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     img = img[630:980]
+    cv2.imwrite("cropfull.jpg",cv2.cvtColor(img, cv2.COLOR_HSV2BGR))
     imgs = []
     imgs.append(img[:,120:520])
+    cv2.imwrite("crop1.jpg",cv2.cvtColor(imgs[-1], cv2.COLOR_HSV2BGR))
     imgs.append(img[:,530:900])
+    cv2.imwrite("crop2.jpg",cv2.cvtColor(imgs[-1], cv2.COLOR_HSV2BGR))
     imgs.append(img[:,900:1250])
+    cv2.imwrite("crop3.jpg",cv2.cvtColor(imgs[-1], cv2.COLOR_HSV2BGR))
     imgs.append(img[:,1250:1580])
+    cv2.imwrite("crop4.jpg",cv2.cvtColor(imgs[-1], cv2.COLOR_HSV2BGR))
     imgs.append(img[:,1580:1890])
+    cv2.imwrite("crop5.jpg",cv2.cvtColor(imgs[-1], cv2.COLOR_HSV2BGR))
     imgs.append(rotate_image (img[:,1890:2220], -25)[30:,:280])
+    cv2.imwrite("crop6.jpg",cv2.cvtColor(imgs[-1], cv2.COLOR_HSV2BGR))
     imgs.append(rotate_image (img[:,2150:2490], -25)[:,35:320])
+    cv2.imwrite("crop7.jpg",cv2.cvtColor(imgs[-1], cv2.COLOR_HSV2BGR))
     i = 0
     queue = []
     for a in imgs:
